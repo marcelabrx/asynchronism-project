@@ -52,3 +52,10 @@
     }
 
 .ldio-0ynya8txoefi div { box-sizing: content-box; }
+
+.card-image {
+  background-size: cover;
+  background-position: center;
+  height: 200px;
+  max-width: 100%;
+}
