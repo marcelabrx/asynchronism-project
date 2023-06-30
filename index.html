@@ -27,10 +27,10 @@
                 Jobs.It
               </h1>
             </a>
-            <button class="lg:hidden">
-              <i class="hidden fa-solid fa-bars text-white text-xl"></i>
-              <i class="fa-solid fa-xmark text-white text-xl"></i>
-            </button>
+            <div class="flex items-center justify-center lg:hidden">
+              <button class="outline-none" id="open-menu"><i class="fa-solid fa-bars text-white text-xl"></i></button>
+              <button id="close-menu" class="hidden outline-none"><i class="fa-solid fa-xmark text-white text-xl"></i></button>
+            </div>
           </div>
           <div id="menu" class="hidden bg-white space-y-1 px-2 pb-3 pt-2 shadow-lg lg:flex lg:items-center lg:bg-transparent lg:shadow-none">
             <a id="home-page" href="" class="block mt-1 px-3 py-2 rounded-md text-gray-900 text-base font-medium active:bg-[#fbfbfb] active:text-purple-500 hover:bg-[#fbfbfb] hover:text-blue-700 lg:mr-2 lg:p4 lg:text-white lg:text-lg"><i class="fa-solid fa-house mr-1"></i>Home</a>
@@ -88,10 +88,10 @@
 
       <!-- Add and edit job -->
       <div id="form-job" class="hidden mx-auto p-4">
-        <h2 id="create-job" class="text-2xl font-bold mb-4">Create Job</h2>
+        <h2 id="add-job" class="text-2xl font-bold mb-4">Create Job</h2>
         <h2 id="edit-job" class="hidden text-2xl font-bold mb-4">Edit Job</h2>
         <p class="mb-4">Please, fill in the following information to <span id="change-edit">create</span> a job, remember that the more specific and complete the job, the better the results will be, good luck!</p>
-        <form class="max-w-md mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 lg:max-w-none lg:w-sm">
+        <form id="form-create-job" class="max-w-md mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 lg:max-w-none lg:w-sm">
           <div class=" lg:flex lg:justify-arround">
             <div class="lg:flex-colum lg:w-full lg:px-36">
               <div class="mb-4">
@@ -251,7 +251,7 @@
                         <p class="text-sm text-gray-700">
                           ¿Are you sure you want to delete "<span
                             class="modal-text text-red-600 font-bold"
-                          > MObile</span
+                          ></span
                           >"? All information will be permanently removed. This action cannot be undone.
                         </p>
                       </div>

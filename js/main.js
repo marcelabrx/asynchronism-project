@@ -21,8 +21,8 @@ const hideElements = (selectors) => {
 
 let isSubmit = false
 
-const getJobs = () => {
-    fetch(`https://6487a64cbeba62972790dfa2.mockapi.io/jobs`)
+const getJobs = (params) => {
+    fetch(`https://6487a64cbeba62972790dfa2.mockapi.io/jobs/?${params ? `${params}` : "" }`)
     .then(res => res.json())
     .then(jobs => renderJobs(jobs))
 }
@@ -32,13 +32,27 @@ const getJob = (jobId) => {
     .then(res => res.json())
     .then(job => renderJob(job))
 }
-const editJob =(jobId)=>{
+const createJob = () => {
+    fetch(`https://6487a64cbeba62972790dfa2.mockapi.io/jobs`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'Application/json'
+        },
+        body: JSON.stringify(saveJobInformation())
+    })
+}
+const editJob = (jobId) => {
     fetch(`https://6487a64cbeba62972790dfa2.mockapi.io/jobs/${jobId}`, {
         method: "PUT",
         headers: {
             'Content-Type': 'Application/json'
         },
-        body: JSON.stringify(saveJob(jobId))
+        body: JSON.stringify(saveJobInformation(jobId))
+    }).finally(() => window.location.reload())
+}
+const deleteJob = (jobId) => {
+    fetch(`https://6487a64cbeba62972790dfa2.mockapi.io/jobs/${jobId}`, {
+        method: "DELETE",
     }).finally(() => window.location.reload())
 }
 
@@ -96,8 +110,8 @@ const detailsCard = (jobId) => {
     showElement(".container-card")
 }
 
-//arreglar el setTimeout
-const renderJob = ( {id, name, image, location, category, languages, seniority, salary, description, benefits: { internet_paid, health_insurance, vacation } } ) => {    
+
+const renderJob = ( {id, name, image, location, category, languages, seniority, salary, description, benefits } ) => {    
     showElement("#spinner")
     setTimeout(() => {
         hideElement("#spinner")
@@ -119,23 +133,40 @@ const renderJob = ( {id, name, image, location, category, languages, seniority, 
             <hr>
             <div>
                 <h3 class="mt-2">Benefits</h3>
-                <span class="text-gray-700 mb-2"><i class="fa-solid fa-square-check text-green-600 mr-1"></i>${internet_paid ? "Internet Paid" : "Internet Part Payment"} |</span>
-                <span class="text-gray-700 mb-2 span-hinsurance"><i class="fa-solid fa-square-check text-green-600 mr-1"></i>${health_insurance === "Yes" ? $("#h-insurance-type").value : "" }  |</span>
+                <span class="text-gray-700 mb-2"><i class="fa-solid fa-square-check text-green-600 mr-1"></i> ${benefits.internet_paid } |</span>
+                <span class="text-gray-700 mb-2 span-hinsurance"><i class="fa-solid fa-square-check text-green-600 mr-1"></i>$ ${benefits.health_insurance}|</span>
+                <span class="text-gray-700 mb-2 span-vacation"><i class="fa-solid fa-square-check text-green-600 mr-1"></i>${benefits.vacation } |</span>
             </div>
             <div class="flex mt-5 mb-3">
-                <button onclick="editJobs('${id}')" class="btn-edit px-4 py-1 bg-green-600 hover:bg-green-700 rounded-md text-white mr-2" data-id="${ id }">Edit</button>
+                <button class="btn-edit px-4 py-1 bg-green-600 hover:bg-green-700 rounded-md text-white mr-2" data-id="${ id }">Edit</button>
                 <button class="btn-delete px-4 py-1 bg-red-600 hover:bg-red-700 active:bg-red-700 rounded-md text-white" data-id="${ id }">Delete</button>
             </div>
         </div>
         `
-        
-        
+        $(".btn-edit").addEventListener("click", () => {
+            hideElements(["#add-btn", "#add-job"])
+            $("#change-edit").innerText = "edit"
+            showElements(["#edit-btn", "#form-job", "#edit-job" ])
+            const jobId = $(".btn-edit").getAttribute("data-id")
+            $("#edit-btn").setAttribute("data-id", jobId) 
+            // isSubmit = true 
+        })
+
+        $(".btn-delete").addEventListener("click", () => {
+            showElement("#modal-window")
+            hideElement("#card-details")
+            $(".modal-text").innerHTML = `${name}`
+            const jobId = $(".btn-delete").getAttribute("data-id")
+            $("#modal-delete").setAttribute("data-id", jobId)
+        }) 
     }, 2000)
+    
 }
 /* <span class="text-gray-700 mb-2 span-hinsurance"><i class="fa-solid fa-square-check text-green-600 mr-1"></i>${health_insurance === "Yes" ? $("#h-insurance-type").value : $(".span-hinsurance").classList.add("hidden") }  |</span>
 <span class="text-gray-700 mb-2 span-vacation"><i class="fa-solid fa-square-check text-green-600 mr-1"></i>${vacation === "Yes" ? $("#vacation-time").value : $(".span-vacation").classList.add("hidden") } |</span> */
+// ${internet_paid ? "Internet Paid" : "Internet Part Payment"}  
 
-const saveJob = () => {
+const saveJobInformation = () => {
     return {
         name: $("#name").value, 
         image: $("#image").value,
@@ -157,17 +188,28 @@ const saveJob = () => {
         }
     }
 }
-const editJobs = () => {
-    hideElements(["#add-btn","#create-job"])
-    $("#change-edit").innerText = "edit"
-    showElements(["#edit-btn", "#form-job", "#edit-job" ])
-    const userId = $(".btn-edit").getAttribute("data-id")
-    $("#edit-btn").setAttribute("data-id", userId) 
-    isSubmit = true   
+const populateForm = ( {name, image, description, languages, category, seniority, location, benefits} ) => {
+    $("#name").value = name 
+    $("#image").value = image
+    $("#description").value = description
+    $("#language-one").value = languages
+    $("#language-two").value = languages
+    $("#language-three").value = languages
+    $("#language-four").value = languages
+    $("#language-five").value = languages
+    $("#category").value = category
+    $("#seniority").value = seniority
+    $("#location").value = location
+    $(".vacation").value = benefits.vacation
+    $(".healt_insurance").value = benefits.health_insurance
+    $(".internet_paid").value = benefits.internet_paid
 }
-const populateForm = ( {} )
+
 
 const initializaApp = () => {
+    getJobs()
+    getJob()
+
     $("#create-job").addEventListener("click", (e) => {
         e.preventDefault()
         showElement("#form-job")
@@ -175,24 +217,32 @@ const initializaApp = () => {
         hideElement("form")
     })
     
-    $(".fa-bars").addEventListener("click", () => {
-        hideElement(".fa-xmark")
-        showElement("#menu")
+    $("#open-menu").addEventListener("click", () => {
+        showElements(["#close-menu", "#menu"])
+        hideElement("#open-menu")
     })
-    $(".fa-xmark").addEventListener("click", () => {
-        hideElement(".fa-bars")
-        hideElement("#menu")
+    $("#close-menu").addEventListener("click", () => {
+        showElement("#open-menu")
+        hideElements(["#close-menu", "#menu"])
+    })
+    $("#form-create-job").addEventListener("submit", (e) => {
+        e.preventDefault
+        createJob()
+        $("#form-create-job").reset
+    })
+    $("#modal-delete").addEventListener("click", () => {
+        const jobId = $("#modal-delete").getAttribute("data-id")
+        deleteJob(jobId)
+    })
+    $("#modal-cancel").addEventListener("click", () => {
+        hideElement("#modal-window")
+        window.location.reload()
     })
 }
         
 
     
 
-window.addEventListener("load", () => {
-    initializaApp()
-    getJobs()
-    getJob()
-    
-}) 
+window.addEventListener("load", initializaApp()) 
     
 
