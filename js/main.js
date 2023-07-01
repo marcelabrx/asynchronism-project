@@ -21,17 +21,31 @@ const hideElements = (selectors) => {
 
 let isSubmit = false
 
-const getJobs = (params) => {
-    fetch(`https://6487a64cbeba62972790dfa2.mockapi.io/jobs/?${params ? `${params}` : "" }`)
-    .then(res => res.json())
-    .then(jobs => renderJobs(jobs))
-}
-
-const getJob = (jobId) => {
+const getJobs = (jobId = "") => {
     fetch(`https://6487a64cbeba62972790dfa2.mockapi.io/jobs/${jobId}`)
     .then(res => res.json())
-    .then(job => renderJob(job))
+    .then(job => {
+        if (jobId == "") {
+            renderJobs(job)
+        } else {
+            // console.log(job)
+            populateForm(job)
+        }
+    })
 }
+
+// const filterFetch = (params) => {
+//     fetch(`https://6487a64cbeba62972790dfa2.mockapi.io/jobs/?${params ? `${params}` : "" }`)
+//     .then(res => res.json())
+//     .then(jobs => renderJobs(jobs))
+// }
+
+const getJobDetail = (jobId) => {
+    fetch(`https://6487a64cbeba62972790dfa2.mockapi.io/jobs/${jobId}`)
+    .then(res => res.json())
+    .then(job => renderJob(job)) 
+}
+
 const createJob = () => {
     fetch(`https://6487a64cbeba62972790dfa2.mockapi.io/jobs`, {
         method: "POST",
@@ -82,16 +96,29 @@ const renderJobs = (jobs) => {
                             <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">${seniority}</span>
                             <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">$${salary}</span>
                             </div>
-                            <button onclick="detailsCard('${id}')" class="btn-see-datails mb-4 px-4 py-2 inline-block bg-blue-500 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2 hover:bg-blue-700">See details<i class="fa-solid fa-arrow-right ml-2"></i>
+                            <button class="btn-see-datails mb-4 px-4 py-2 inline-block bg-blue-500 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2 hover:bg-blue-700" data-id="${ id }">See details<i class="fa-solid fa-arrow-right ml-2"></i>
                             </button>
                         </div>
                     </div>
                 </div>
                 
                 `
-            }  
+                for (const btn of $$(".btn-see-datails")) {
+                    btn.addEventListener("click", () => {
+                        hideElement("#preview-card")
+                        hideElement("#filters")
+                        showElement("#card-details")
+                        showElement(".container-card")
+                        const jobId = btn.getAttribute("data-id")
+                        getJobDetail(jobId)
+                    })
+                }
+            }
+              
         }, 2000)
+        
     }
+    
 }
 const generateDisplayedLanguages = (languages) => {
     const maxLanguages = 3
@@ -102,16 +129,9 @@ const generateDisplayedLanguages = (languages) => {
     }
     return displayedLanguages
 }
-const detailsCard = (jobId) => {
-    getJob(jobId)
-    hideElement("#preview-card")
-    hideElement("#filters")
-    showElement("#card-details")
-    showElement(".container-card")
-}
 
 
-const renderJob = ( {id, name, image, location, category, languages, seniority, salary, description, benefits } ) => {    
+const renderJob = ( {id, name, image, location, category, languages, seniority, salary, description } ) => {    
     showElement("#spinner")
     setTimeout(() => {
         hideElement("#spinner")
@@ -133,9 +153,9 @@ const renderJob = ( {id, name, image, location, category, languages, seniority, 
             <hr>
             <div>
                 <h3 class="mt-2">Benefits</h3>
-                <span class="text-gray-700 mb-2"><i class="fa-solid fa-square-check text-green-600 mr-1"></i> ${benefits.internet_paid } |</span>
-                <span class="text-gray-700 mb-2 span-hinsurance"><i class="fa-solid fa-square-check text-green-600 mr-1"></i>$ ${benefits.health_insurance}|</span>
-                <span class="text-gray-700 mb-2 span-vacation"><i class="fa-solid fa-square-check text-green-600 mr-1"></i>${benefits.vacation } |</span>
+                <span class="text-gray-700 mb-2"><i class="fa-solid fa-square-check text-green-600 mr-1"></i>|</span>
+                <span class="text-gray-700 mb-2 span-hinsurance"><i class="fa-solid fa-square-check text-green-600 mr-1"></i>|</span>
+                <span class="text-gray-700 mb-2 span-vacation"><i class="fa-solid fa-square-check text-green-600 mr-1"></i>|</span>
             </div>
             <div class="flex mt-5 mb-3">
                 <button class="btn-edit px-4 py-1 bg-green-600 hover:bg-green-700 rounded-md text-white mr-2" data-id="${ id }">Edit</button>
@@ -149,7 +169,8 @@ const renderJob = ( {id, name, image, location, category, languages, seniority, 
             showElements(["#edit-btn", "#form-job", "#edit-job" ])
             const jobId = $(".btn-edit").getAttribute("data-id")
             $("#edit-btn").setAttribute("data-id", jobId) 
-            // isSubmit = true 
+            isSubmit = false
+            getJobs(jobId)
         })
 
         $(".btn-delete").addEventListener("click", () => {
@@ -168,53 +189,69 @@ const renderJob = ( {id, name, image, location, category, languages, seniority, 
 
 const saveJobInformation = () => {
     return {
-        name: $("#name").value, 
-        image: $("#image").value,
-        description: $("#description").value,
-        languages: [
+        "name": $("#name").value, 
+        "image": $("#image").value,
+        "description": $("#description").value,
+        "salary": $("#salary").value,
+        "languages": [
             $("#language-one").value,
             $("#language-two").value,
             $("#language-three").value,
             $("#language-four").value,
-            $("#language-five").value
         ], 
-        category: $("#category").value,
-        seniority: $("#seniority").value, 
-        location: $("#location").value,
-        benefits: {
-            vacation: $(".vacation").value,
-            health_insurance: $(".healt_insurance").value, 
-            internet_paid: $(".internet_paid").value
+        "category": $("#category").value,
+        "seniority": $("#seniority").value, 
+        "location": $("#location").value,
+        "benefits": {
+            "vacation": $(".vacation").checked ? $("#vacation-time").value : null,
+            "health_insurance": $(".healt_insurance").checked ? $("#h-insurance-type").value : null, 
+            "internet_paid":  $(".internet_paid").value
         }
     }
 }
-const populateForm = ( {name, image, description, languages, category, seniority, location, benefits} ) => {
+
+const populateForm = ({name, image, description, salary, languages, category, seniority, location, benefits }) => {
     $("#name").value = name 
     $("#image").value = image
     $("#description").value = description
-    $("#language-one").value = languages
-    $("#language-two").value = languages
-    $("#language-three").value = languages
-    $("#language-four").value = languages
-    $("#language-five").value = languages
+    $("#salary").value = salary
+    $("#language-one").value = languages[0]
+    $("#language-two").value = languages[1]
+    $("#language-three").value = languages[2]
+    $("#language-four").value = languages[3]
     $("#category").value = category
     $("#seniority").value = seniority
     $("#location").value = location
-    $(".vacation").value = benefits.vacation
-    $(".healt_insurance").value = benefits.health_insurance
-    $(".internet_paid").value = benefits.internet_paid
+    if (benefits.vacation) {
+        $("#vacation-time").value  = benefits.vacation
+    } else {
+        $$(".vacation")[1].checked = true
+    }
+    if (benefits.health_insurance){
+        $("#h-insurance-type").value = benefits.health_insurance
+    } else {
+        $$(".healt_insurance")[1].checked = true
+    }
+    //esta andando mal internet paid, siempre esta checked en yes
+    if ($$(".internet_paid")[0].checked){
+        $(".internet_paid").value = benefits.internet_paid
+    } else {
+        $$(".internet_paid")[1].checked = true
+    }
 }
+
 
 
 const initializaApp = () => {
     getJobs()
-    getJob()
+    // getJobDetail)
 
     $("#create-job").addEventListener("click", (e) => {
         e.preventDefault()
         showElement("#form-job")
         hideElement("#preview-card")
         hideElement("form")
+        isSubmit = true
     })
     
     $("#open-menu").addEventListener("click", () => {
@@ -226,9 +263,15 @@ const initializaApp = () => {
         hideElements(["#close-menu", "#menu"])
     })
     $("#form-create-job").addEventListener("submit", (e) => {
-        e.preventDefault
-        createJob()
-        $("#form-create-job").reset
+        e.preventDefault()
+        if (isSubmit) {
+            createJob()
+        } else {
+            const jobId = $("#edit-btn").getAttribute("data-id")
+            editJob(jobId)
+        }
+        
+        $("#form-create-job").reset()
     })
     $("#modal-delete").addEventListener("click", () => {
         const jobId = $("#modal-delete").getAttribute("data-id")
@@ -237,7 +280,7 @@ const initializaApp = () => {
     $("#modal-cancel").addEventListener("click", () => {
         hideElement("#modal-window")
         window.location.reload()
-    })
+    })  
 }
         
 

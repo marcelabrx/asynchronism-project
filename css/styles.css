@@ -1,3 +1,7 @@
+main {
+  flex-grow: 1;
+}
+
 /*SPINNER*/
 @keyframes ldio-0ynya8txoefi-r {
     0%, 100% { animation-timing-function: cubic-bezier(0.2 0 0.8 0.8) }
