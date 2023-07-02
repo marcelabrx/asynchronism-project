@@ -28,17 +28,10 @@ const getJobs = (jobId = "") => {
         if (jobId == "") {
             renderJobs(job)
         } else {
-            // console.log(job)
             populateForm(job)
         }
     })
 }
-
-// const filterFetch = (params) => {
-//     fetch(`https://6487a64cbeba62972790dfa2.mockapi.io/jobs/?${params ? `${params}` : "" }`)
-//     .then(res => res.json())
-//     .then(jobs => renderJobs(jobs))
-// }
 
 const getJobDetail = (jobId) => {
     fetch(`https://6487a64cbeba62972790dfa2.mockapi.io/jobs/${jobId}`)
@@ -68,6 +61,12 @@ const deleteJob = (jobId) => {
     fetch(`https://6487a64cbeba62972790dfa2.mockapi.io/jobs/${jobId}`, {
         method: "DELETE",
     }).finally(() => window.location.reload())
+}
+
+const filterFetch = (params) => {
+    fetch(`https://6487a64cbeba62972790dfa2.mockapi.io/jobs/?${params ? `${params}` : "" }`)
+    .then(res => res.json())
+    .then(jobs => renderJobs(jobs))
 }
 
 const renderJobs = (jobs) => {
@@ -205,10 +204,11 @@ const saveJobInformation = () => {
         "benefits": {
             "vacation": $(".vacation").checked ? $("#vacation-time").value : null,
             "health_insurance": $(".healt_insurance").checked ? $("#h-insurance-type").value : null, 
-            "internet_paid":  $(".internet_paid").value
+            "internet_paid":  $$(".internet_paid")[0].checked ? true : false
         }
     }
 }
+// $(".internet_paid").value esto va despues de ? 
 
 const populateForm = ({name, image, description, salary, languages, category, seniority, location, benefits }) => {
     $("#name").value = name 
@@ -240,11 +240,16 @@ const populateForm = ({name, image, description, salary, languages, category, se
     }
 }
 
-
+const getParams = (key, selector) => {
+    const params = {
+        [key]: $(selector).value
+    }
+    const url = new URLSearchParams(params).toString()
+    return url
+}
 
 const initializaApp = () => {
     getJobs()
-    // getJobDetail)
 
     $("#create-job").addEventListener("click", (e) => {
         e.preventDefault()
@@ -280,7 +285,28 @@ const initializaApp = () => {
     $("#modal-cancel").addEventListener("click", () => {
         hideElement("#modal-window")
         window.location.reload()
-    })  
+    }) 
+    $("#location-filter").addEventListener("change", (e) => {
+        e.preventDefault
+        $("#location-filter").value
+        $("#seniority-filter").disabled = true
+        $("#category-filter").disabled = true
+        filterFetch(getParams("location", "#location-filter"))
+    }) 
+    $("#category-filter").addEventListener("change", (e) => {
+        e.preventDefault
+        $("#category-filter").value
+        $("#seniority-filter").disabled = true
+        $("#location-filter").disabled = true
+        filterFetch(getParams("category", "#category-filter"))
+    }) 
+    $("#seniority-filter").addEventListener("change", (e) => {
+        e.preventDefault
+        $("#seniority-filter").value
+        $("#location-filter").disabled = true
+        $("#category-filter").disabled = true
+        filterFetch(getParams("seniority", "#seniority-filter"))
+    }) 
 }
         
 

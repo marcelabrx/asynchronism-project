@@ -49,27 +49,60 @@
       </div>
 
       <!-- Filters -->
-      <form id="filters" class="flex flex-wrap items-center justify-center mt-10">
-        <select class="py-2 px-4 m-2 bg-blue-200 rounded-md">
-          <option value="">Location</option>
-          <option value=""></option>
-          <option value=""></option>
-        </select>
-        <select class="py-2 px-4 m-2 bg-blue-200 rounded-md">
-          <option value="">Seniority</option>
-          <option value="Trainee">Trainee</option>
-          <option value="Junior">Junior</option>
-          <option value="Senior">Senior</option>
-          <option value="SemiSenior">SemiSenior</option>
-        </select>
-        <select class="py-2 px-4 bg-blue-200 rounded-md">
-          <option value="">Category</option>
-          <option value=""></option>
-          <option value=""></option>
-        </select>
-        <button class="p-2 m-2 bg-black text-white hover:text-blue-700 hover:bg-gray-300 rounded-md"><i class="fa-solid fa-magnifying-glass mr-1"></i>Search</button>
-        <button class="p-2 m-2 bg-black text-white hover:text-blue-700 hover:bg-gray-300 rounded-md"><i class="fa-solid fa-eraser mr-1"></i>Clean</button>
+      <form id="filters" class="font-mono flex flex-wrap items-center justify-center mt-10">
+        <div>
+          <label for="location-filter" class="flex flex-col items-center border-b border-t border-blue-500 font-bold">Location</label>
+          <select id="location-filter" class="py-2 px-4 m-2 bg-blue-200 rounded-md">
+            <option value="Remote">Remote</option>
+            <option value="Argentina">Argentina</option>
+            <option value="Chile">Chile</option>
+            <option value="United States">United States</option>
+            <option value="Mexico">Mexico</option>
+            <option value="Spain">Spain</option>
+          </select>
+        </div>
+        <div>
+          <label for="seniority-filter" class="flex flex-col items-center border-b border-t border-blue-500 font-bold">Seniority</label>
+          <select id="seniority-filter" class="py-2 px-4 m-2 bg-blue-200 rounded-md">
+            <option value="Trainee">Trainee</option>
+            <option value="Junior">Junior</option>
+            <option value="Senior">Senior</option>
+            <option value="Semi Senior">SemiSenior</option>
+            <option value="Project-Manager">Project Manager</option>
+          </select>
+        </div>
+        <div>
+          <label for="category-filter" class="flex flex-col items-center border-b border-t border-blue-500 font-bold">Category</label>
+          <select id="category-filter" class="py-2 px-4 m-2 bg-blue-200 rounded-md">
+            <option value="Development">Development</option>
+            <option value="Design">Design</option>
+            <option value="Operations">Operations</option>
+            <option value="Security">Security</option>
+            <option value="Data Analytics">Data Analytics</option>
+          </select>
+        </div>
+        
+        <!-- <button id="search-btn" class="p-2 mt-5 mx-2 bg-black text-white hover:text-blue-700 hover:bg-gray-300 rounded-md"><i class="fa-solid fa-magnifying-glass mr-1"></i>Search</button> -->
+        <button id="clean-btn" class="p-2 mt-5 bg-black text-white hover:text-blue-700 hover:bg-gray-300 rounded-md"><i class="fa-solid fa-eraser mr-1"></i>Clean</button>
       </form>
+
+      <!-- Succesfull alert -->
+      <div
+        id="succesfull-alert"
+        class="hidden bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3 relative"
+        role="alert"
+      >
+        <strong class="font-bold">Amazing!</strong>
+        <span class="block sm:inline"
+          >Your choice has been successfully added.</span
+        >
+        <button
+          id="close-succesfull-alert"
+          class="absolute top-0 bottom-0 right-0 px-4 py-3"
+        >
+          <i class="fa-solid fa-xmark fill-current h-6 w-6 text-blue-700"></i>
+        </button>
+      </div>
 
       <!--Preview Card-->
       <div class="container mx-auto py-4">
@@ -122,17 +155,31 @@
                     <option value="Trainee">Trainee</option>
                     <option value="Junior">Junior</option>
                     <option value="Senior">Senior</option>
-                    <option value="SemiSenior">SemiSenior</option>
+                    <option value="Semi Senior">Semi Senior</option>
+                    <option value="Project Manager">Project Manager</option>
                   </select>
                 </div>
                 <div class="ml-2 w-1/2">
                   <label class="block text-gray-700 text-sm font-bold mb-2" for="category">Category<span class="text-red-500 ml-1">*</span></label>
-                  <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="category" type="text" placeholder="Enter category">
+                  <select class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="category">
+                    <option value="Development">Development</option>
+                    <option value="Design">Design</option>
+                    <option value="Operations">Operations</option>
+                    <option value="Security">Security</option>
+                    <option value="Data Analytics">Data Analytics</option>
+                  </select>
                 </div>
               </div>
               <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="location">Location<span class="text-red-500 ml-1">*</span></label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="location" type="text" placeholder="Enter the location position">
+                <select class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="location">
+                  <option value="Remote">Remote</option>
+                  <option value="Argentina">Argentina</option>
+                  <option value="Chile">Chile</option>
+                  <option value="United States">United States</option>
+                  <option value="Mexico">Mexico</option>
+                  <option value="Spain">Spain</option>
+                </select>
               </div>
               <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="salary">Salary<span class="text-red-500 ml-1">*</span></label>
