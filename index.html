@@ -11,9 +11,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
     integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <title>Asynchronism Project</title>
+    <link rel="icon" href="./assets/page-logo.ico" />
 </head>
 <body class="bg-blue-50 h-screen flex flex-col">
-    <!-- Header -->
+    <!-- ***** HEADER **** -->
     <header class="font-mono">
       <nav class="bg-gradient-to-r from-indigo-700 to-blue-300">
         <div class="lg:flex lg:justify-between lg:p-2 lg:mx-2">
@@ -39,7 +40,8 @@
         </div>
       </nav>
     </header>
-    <!-- Main -->
+
+    <!-- ***** MAIN **** -->
     <main class="flex flex-col">
       <!--Spinner-->
       <div id="spinner" class="hidden flex items-center justify-center">
@@ -82,7 +84,6 @@
           </select>
         </div>
         
-        <!-- <button id="search-btn" class="p-2 mt-5 mx-2 bg-black text-white hover:text-blue-700 hover:bg-gray-300 rounded-md"><i class="fa-solid fa-magnifying-glass mr-1"></i>Search</button> -->
         <button id="clean-btn" class="p-2 mt-5 bg-black text-white hover:text-blue-700 hover:bg-gray-300 rounded-md"><i class="fa-solid fa-eraser mr-1"></i>Clean</button>
       </form>
 
@@ -107,7 +108,7 @@
       <!--Preview Card-->
       <div class="container mx-auto py-4">
         <div id="preview-card" class="flex flex-wrap -mx-4" >
-          <!-- change div to js -->
+          <!-- rendered from js -->
           
         </div>
       </div>
@@ -115,7 +116,7 @@
       <!-- Card Details -->
       <section class="hidden container-card flex justify-center items-center w-full md:w-1/2 lg:w-1/3 my-10">
         <div id="card-details" class="bg-white mx-2 px-2 md:mx-5 md:pt-2 rounded-md shadow-lg">
-          <!-- rendered for js -->
+          <!-- rendered from js -->
         </div>
       </section>
 
@@ -129,7 +130,8 @@
             <div class="lg:flex-colum lg:w-full lg:px-36">
               <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="name">Job position<span class="text-red-500 ml-1">*</span></label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Enter your job position">
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" name="name" type="text" placeholder="Enter your job position">
+                <p class="name-error hidden py-2 mx-1 text-red-600"><i class="fa-solid fa-circle-exclamation mr-2"></i>Enter a valid job position.</p>
               </div>
               <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="image">Image position</label>
@@ -138,10 +140,12 @@
               <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="description">Description<span class="text-red-500 ml-1">*</span></label>
                 <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="description" rows="5" placeholder="Enter the job description"></textarea>
+                <p class="description-error hidden py-2 mx-1 text-red-600"><i class="fa-solid fa-circle-exclamation mr-2"></i>Enter a valid job description.</p>
               </div>
               <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="">Languages<span class="text-red-500 ml-1">*</span></label>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="language-one">Languages<span class="text-red-500 ml-1">*</span></label>
                 <input class="shadow appearance-none border rounded w-24 my-1 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="language-one" type="text" placeholder="Enter the job position languages">
+                <p class="language-error hidden py-2 mx-1 text-red-600"><i class="fa-solid fa-circle-exclamation mr-2"></i>Enter at least one valid language.</p>
                 <input class="shadow appearance-none border rounded w-24 my-1 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="language-two" type="text" placeholder="Enter the job position languages">
                 <input class="shadow appearance-none border rounded w-24 my-1 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="language-three" type="text" placeholder="Enter the job position languages">
                 <input class="shadow appearance-none border rounded w-24 my-1 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="language-four" type="text" placeholder="Enter the job position languages">
@@ -152,27 +156,32 @@
                 <div class="mr-2 w-1/2">
                   <label class="block text-gray-700 text-sm font-bold mb-2" for="seniority">Seniority<span class="text-red-500 ml-1">*</span></label>
                   <select class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="seniority">
+                    <option value="">Choose an option</option>
                     <option value="Trainee">Trainee</option>
                     <option value="Junior">Junior</option>
                     <option value="Senior">Senior</option>
                     <option value="Semi Senior">Semi Senior</option>
                     <option value="Project Manager">Project Manager</option>
                   </select>
+                  <p class="seniority-error hidden py-2 mx-1 text-red-600"><i class="fa-solid fa-circle-exclamation mr-2"></i>Enter a valid job seniority.</p>
                 </div>
                 <div class="ml-2 w-1/2">
                   <label class="block text-gray-700 text-sm font-bold mb-2" for="category">Category<span class="text-red-500 ml-1">*</span></label>
                   <select class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="category">
+                    <option value="">Choose an option</option>
                     <option value="Development">Development</option>
                     <option value="Design">Design</option>
                     <option value="Operations">Operations</option>
                     <option value="Security">Security</option>
                     <option value="Data Analytics">Data Analytics</option>
                   </select>
+                  <p class="category-error hidden py-2 mx-1 text-red-600"><i class="fa-solid fa-circle-exclamation mr-2"></i>Enter a valid job category.</p>
                 </div>
               </div>
               <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="location">Location<span class="text-red-500 ml-1">*</span></label>
                 <select class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="location">
+                  <option value="">Choose an option</option>
                   <option value="Remote">Remote</option>
                   <option value="Argentina">Argentina</option>
                   <option value="Chile">Chile</option>
@@ -180,18 +189,20 @@
                   <option value="Mexico">Mexico</option>
                   <option value="Spain">Spain</option>
                 </select>
+                <p class="location-error hidden py-2 mx-1 text-red-600"><i class="fa-solid fa-circle-exclamation mr-2"></i>Enter a valid job location.</p>
               </div>
               <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="salary">Salary<span class="text-red-500 ml-1">*</span></label>
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="salary" type="number" placeholder="Enter the salary position">
+                <p class="salary-error hidden py-2 mx-1 text-red-600"><i class="fa-solid fa-circle-exclamation mr-2"></i>Enter a valid amount.</p>
               </div>
               <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2">Benefits:</label>
                 <div class="flex-colum flex-wrap">
                   <div class="inline-flex items-center mr-4 mb-2">
-                    <p class="mr-2">Internet Paid:</p>
+                    <p class="mr-2 text-gray-700 font-semibold">Internet Paid:</p>
                     <label class="inline-flex items-center">
-                      <input type="radio" class="form-radio internet_paid" name="internet_paid" value="Yes">
+                      <input type="radio" class="form-radio internet_paid" name="internet_paid" value="Yes" checked>
                       <span class="ml-2">Yes</span>
                     </label>
                     <label class="inline-flex items-center ml-2">
@@ -199,40 +210,19 @@
                       <span class="ml-2">No</span>
                     </label>
                   </div>
-                  <div class="flex">
+                  <div>
                     <div class="inline-flex items-center mr-4 mb-2">
-                      <p class="mr-2">Vacations:</p>
-                      <label class="inline-flex items-center">
-                        <input type="radio" class="form-radio vacation" name="vacation" value="Yes" checked>
-                        <span class="ml-2">Yes</span>
-                      </label>
-                      <label class="inline-flex items-center ml-2">
-                        <input type="radio" class="form-radio vacation" name="vacation" value="No">
-                        <span class="ml-2">No</span>
-                      </label>
+                      <label class="block mb-2 mt-1 text-gray-700 font-semibold" for="vacation-time">Vacations<span class="text-red-500 ml-1">*</span></label>
+                      <input class="block shadow appearance-none border rounded w-auto ml-2 py-2 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="vacation-time" type="text" placeholder="Enter vacation time">
                     </div>
-                    <div class="mr-2 mb-2">
-                      <label class="text-gray-700 text-sm font-bold mb-2" for="vacation-time">Vacation Time:</label>
-                      <input class="shadow appearance-none border rounded w-24 py-2 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="vacation-time" type="text" placeholder="Enter time">
-                    </div>
+                    <p class="vtime-error hidden py-2 mx-1 text-red-600"><i class="fa-solid fa-circle-exclamation mr-2"></i>Enter a valid vacation time.</p>
                   </div>
-                  
-                  <div class="flex">
+                  <div>
                     <div class="inline-flex items-center mr-4 mb-2">
-                      <p class="mr-2">Health Insurance:</p>
-                      <label class="inline-flex items-center">
-                        <input type="radio" class="form-radio healt_insurance" name="healt_insurance" value="Yes" checked>
-                        <span class="ml-2">Yes</span>
-                      </label>
-                      <label class="inline-flex items-center ml-2">
-                        <input type="radio" class="form-radio healt_insurance" name="healt_insurance" value="No">
-                        <span class="ml-2">No</span>
-                      </label>
+                      <label class="block mb-2 mt-1 text-gray-700 font-semibold" for="h-insurance-type">Health Insurance<span class="text-red-500 ml-1">*</span></label>
+                      <input class="block shadow appearance-none border rounded w-auto ml-2 py-2 pl-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="h-insurance-type" type="text" placeholder="Enter specifications">
                     </div>
-                    <div class="mr-2 mb-2 h-insurance-type">
-                      <label class="text-gray-700 text-sm font-bold mb-2" for="h-insurance-type">Insurance Type:</label>
-                      <input class="shadow appearance-none border rounded w-26 py-2 pl-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="h-insurance-type" type="text" placeholder="Enter specifications">
-                    </div>
+                    <p class="hinsurance-error hidden py-2 mx-1 text-red-600"><i class="fa-solid fa-circle-exclamation mr-2"></i>Enter a valid insurance type description.</p>
                   </div>
                   
                 </div>
@@ -261,7 +251,7 @@
         role="dialog"
         aria-modal="true">
         <div
-          class="fixed inset-0 bg-transparent backdrop-blur-sm bg-opacity-75 transition-opacity"
+          class="fixed inset-0 bg-transparent backdrop-blur-md bg-opacity-75 transition-opacity"
         >
           <div class="fixed inset-0 z-10 overflow-y-auto">
             <div
@@ -328,6 +318,8 @@
         </div>
       </div>
     </main>
+
+    <!-- ***** FOOTER **** -->
     <footer class="bg-gradient-to-r from-indigo-700 to-blue-300">
       <div class="bg-gradient-to-r from-indigo-700 to-blue-300 lg:flex lg:justify-between lg:align-center lg:pt-20 px-10">
         <div class="flex flex-col ml-4 mb-10 font-extrabold text-sm">

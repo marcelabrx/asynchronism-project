@@ -19,8 +19,7 @@ const hideElements = (selectors) => {
     }
 }
 
-let isSubmit = false
-
+// *** FETCH METHODS ***
 const getJobs = (jobId = "") => {
     fetch(`https://6487a64cbeba62972790dfa2.mockapi.io/jobs/${jobId}`)
     .then(res => res.json())
@@ -69,6 +68,18 @@ const filterFetch = (params) => {
     .then(jobs => renderJobs(jobs))
 }
 
+// *** REUSABLE FUNCTIONS ***
+const getParams = (key, selector) => {
+    const params = {
+        [key]: $(selector).value
+    }
+    const url = new URLSearchParams(params).toString()
+    return url
+}
+
+let isSubmit = false
+
+// *** RENDERS ***
 const renderJobs = (jobs) => {
     showElement("#spinner")
     if (jobs) {
@@ -83,7 +94,7 @@ const renderJobs = (jobs) => {
                 $("#preview-card").innerHTML += `
                 <div class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-4 mb-4">
                     <div class="max-w-xs rounded overflow-hidden shadow-lg">
-                    <div class="card-image bg-cover bg-center" style="background-image: url('${image}')"></div>
+                    <div class="card-image bg-cover bg-center" style="background-image: url('${image ? image : "https://fakeimg.pl/600x400/689cc5/adc6db?text=Default+Image"}')"></div>
                         <div class="px-6 py-4">
                             <h2 class="font-bold text-xl mb-2">${name}</h2>
                             <div class="">
@@ -102,18 +113,17 @@ const renderJobs = (jobs) => {
                 </div>
                 
                 `
-                for (const btn of $$(".btn-see-datails")) {
-                    btn.addEventListener("click", () => {
-                        hideElement("#preview-card")
-                        hideElement("#filters")
-                        showElement("#card-details")
-                        showElement(".container-card")
-                        const jobId = btn.getAttribute("data-id")
-                        getJobDetail(jobId)
-                    })
-                }
+                
             }
-              
+            for (const btn of $$(".btn-see-datails")){
+                btn.addEventListener("click", () => {
+                    hideElements(["#preview-card", "#filters"])
+                    showElements(["#card-details", ".container-card"])
+                    const jobId = btn.getAttribute("data-id")
+                    getJobDetail(jobId)
+                })
+            }
+ 
         }, 2000)
         
     }
@@ -130,15 +140,16 @@ const generateDisplayedLanguages = (languages) => {
 }
 
 
-const renderJob = ( {id, name, image, location, category, languages, seniority, salary, description } ) => {    
+const renderJob = ( {id, name, image, location, category, languages, seniority, salary, description, benefits:{health_insurance, internet_paid, vacation } } ) => {    
     showElement("#spinner")
     setTimeout(() => {
         hideElement("#spinner")
         showElement("#card-details")
         showElement(".container-card")
 
+
         $("#card-details").innerHTML += `
-        <div class="card-image bg-cover bg-center" style="background-image: url('${image}')"></div>
+        <div class="card-image bg-cover bg-center" style="background-image: url('${image ? image : "https://fakeimg.pl/600x400/689cc5/adc6db?text=Default+Image"}')"></div>
         <div class="flex-colum">
             <h2 class="text-gray-600 text-2xl font-semibold mb-4">${name}</h2>
             <p class="mb-2">${description}</p>
@@ -151,10 +162,10 @@ const renderJob = ( {id, name, image, location, category, languages, seniority, 
             </div>
             <hr>
             <div>
-                <h3 class="mt-2">Benefits</h3>
-                <span class="text-gray-700 mb-2"><i class="fa-solid fa-square-check text-green-600 mr-1"></i>|</span>
-                <span class="text-gray-700 mb-2 span-hinsurance"><i class="fa-solid fa-square-check text-green-600 mr-1"></i>|</span>
-                <span class="text-gray-700 mb-2 span-vacation"><i class="fa-solid fa-square-check text-green-600 mr-1"></i>|</span>
+                <h3 class="my-2 ">Benefits</h3>
+                <p class="text-gray-700 mb-2"><i class="fa-solid fa-globe text-blue-500 mr-1"></i> ${internet_paid ? "Internet Paid" : "No Paid Internet" } </p>
+                <p class="text-gray-700 mb-2"><i class="fa-solid fa-user-doctor text-blue-500 mr-1"></i> ${health_insurance} </p>
+                <p class="text-gray-700 mb-2"><i class="fa-solid fa-plane text-blue-500 mr-1"></i> ${vacation}</p>
             </div>
             <div class="flex mt-5 mb-3">
                 <button class="btn-edit px-4 py-1 bg-green-600 hover:bg-green-700 rounded-md text-white mr-2" data-id="${ id }">Edit</button>
@@ -174,7 +185,7 @@ const renderJob = ( {id, name, image, location, category, languages, seniority, 
 
         $(".btn-delete").addEventListener("click", () => {
             showElement("#modal-window")
-            hideElement("#card-details")
+            hideElements(["#card-details", "#form-job"])
             $(".modal-text").innerHTML = `${name}`
             const jobId = $(".btn-delete").getAttribute("data-id")
             $("#modal-delete").setAttribute("data-id", jobId)
@@ -182,9 +193,8 @@ const renderJob = ( {id, name, image, location, category, languages, seniority, 
     }, 2000)
     
 }
-/* <span class="text-gray-700 mb-2 span-hinsurance"><i class="fa-solid fa-square-check text-green-600 mr-1"></i>${health_insurance === "Yes" ? $("#h-insurance-type").value : $(".span-hinsurance").classList.add("hidden") }  |</span>
-<span class="text-gray-700 mb-2 span-vacation"><i class="fa-solid fa-square-check text-green-600 mr-1"></i>${vacation === "Yes" ? $("#vacation-time").value : $(".span-vacation").classList.add("hidden") } |</span> */
-// ${internet_paid ? "Internet Paid" : "Internet Part Payment"}  
+
+// *** OBJECT DATA ***
 
 const saveJobInformation = () => {
     return {
@@ -202,13 +212,12 @@ const saveJobInformation = () => {
         "seniority": $("#seniority").value, 
         "location": $("#location").value,
         "benefits": {
-            "vacation": $(".vacation").checked ? $("#vacation-time").value : null,
-            "health_insurance": $(".healt_insurance").checked ? $("#h-insurance-type").value : null, 
+            "vacation" : $("#vacation-time").value,
+            "health_insurance": $("#h-insurance-type").value,
             "internet_paid":  $$(".internet_paid")[0].checked ? true : false
         }
     }
 }
-// $(".internet_paid").value esto va despues de ? 
 
 const populateForm = ({name, image, description, salary, languages, category, seniority, location, benefits }) => {
     $("#name").value = name 
@@ -222,17 +231,8 @@ const populateForm = ({name, image, description, salary, languages, category, se
     $("#category").value = category
     $("#seniority").value = seniority
     $("#location").value = location
-    if (benefits.vacation) {
-        $("#vacation-time").value  = benefits.vacation
-    } else {
-        $$(".vacation")[1].checked = true
-    }
-    if (benefits.health_insurance){
-        $("#h-insurance-type").value = benefits.health_insurance
-    } else {
-        $$(".healt_insurance")[1].checked = true
-    }
-    //esta andando mal internet paid, siempre esta checked en yes
+    $("#vacation-time").value  = benefits.vacation
+    $("#h-insurance-type").value = benefits.health_insurance
     if ($$(".internet_paid")[0].checked){
         $(".internet_paid").value = benefits.internet_paid
     } else {
@@ -240,12 +240,91 @@ const populateForm = ({name, image, description, salary, languages, category, se
     }
 }
 
-const getParams = (key, selector) => {
-    const params = {
-        [key]: $(selector).value
+// *** VALIDATIONS ***
+const validateJobForm = () => {
+    const name = $("#name").value.trim()
+    const description = $("#description").value.trim()
+    const salary =  $("#salary").valueAsNumber
+    const language = $("#language-one").value.trim()
+    const vacationTime = $("#vacation-time").value.trim()
+    const insuranceType = $("#h-insurance-type").value.trim()
+    const category = $("#category").value
+    const location = $("#location").value
+    const seniority = $("#seniority").value
+
+    if (name === ""){
+        $("#name").classList.add("border-red-600")
+        showElement(".name-error")
+    } else {
+        $("#name").classList.remove("border-red-600")
+        hideElement(".name-error")
     }
-    const url = new URLSearchParams(params).toString()
-    return url
+
+    if (description === ""){
+        $("#description").classList.add("border-red-600")
+        showElement(".description-error")
+    } else {
+        $("#description").classList.remove("border-red-600")
+        hideElement(".description-error")
+    }
+
+    if (isNaN(salary)) {
+        $("#salary").classList.add("border-red-600")
+        showElement(".salary-error")
+    } else {
+        $("#salary").classList.remove("border-red-600")
+        hideElement(".salary-error")
+    }
+
+    if (language === ""){
+        $("#language-one").classList.add("border-red-600")
+        showElement(".language-error")
+    } else {
+        $("#language-one").classList.remove("border-red-600")
+        hideElement(".language-error")
+    }
+
+    if (category === "") {
+        $("#category").classList.add("border-red-600")
+        showElement(".category-error")
+    } else {
+        $("#category").classList.remove("border-red-600")
+        hideElement(".category-error")
+    }
+
+    if (location === "") {
+        $("#location").classList.add("border-red-600")
+        showElement(".location-error")
+    } else {
+        $("#location").classList.remove("border-red-600")
+        hideElement(".location-error")
+    }
+
+    if (seniority === "") {
+        $("#seniority").classList.add("border-red-600")
+        showElement(".seniority-error")
+    } else {
+        $("#seniority").classList.remove("border-red-600")
+        hideElement(".seniority-error")
+    }
+
+    if (vacationTime === "") {
+        $("#vacation-time").classList.add("border-red-600")
+        showElement(".vtime-error")
+    } else {
+        $("#vacation-time").classList.remove("border-red-600")
+        hideElement(".vtime-error")
+    }
+
+    if (insuranceType === "") {
+        $("#h-insurance-type").classList.add("border-red-600")
+        showElement(".hinsurance-error")
+    } else {
+        $("#h-insurance-type").classList.remove("border-red-600")
+        hideElement(".hinsurance-error")
+    }
+
+    return name !== "" && description !== "" && !isNaN(salary) && language !== "" && category !== "" && location !== "" && seniority !== "" && vacationTime !== "" && insuranceType !== "" 
 }
 
 const initializaApp = () => {
@@ -253,12 +332,33 @@ const initializaApp = () => {
 
     $("#create-job").addEventListener("click", (e) => {
         e.preventDefault()
-        showElement("#form-job")
-        hideElement("#preview-card")
-        hideElement("form")
+        showElements(["#form-job", "#add-job"])
+        hideElements(["#preview-card", "form", "#card-details", "#edit-job"])
+        $("#change-edit").innerText = "create"
+        $("#form-create-job").reset()
         isSubmit = true
     })
+
+    $("#add-btn").addEventListener("click", () => {
+        showElement("#succesfull-alert")
+        setTimeout( () => {
+            hideElement("#succesfull-alert")
+
+        }, 2000)
+    })
+    $("#edit-btn").addEventListener("click", () => {
+        showElement("#succesfull-alert")
+        setTimeout( () => {
+            hideElement("#succesfull-alert")
+
+        }, 2000)
+    })
     
+    $("#close-succesfull-alert").addEventListener("click", () => {
+        hideElement("#succesfull-alert")
+    })
+
+    //open and close mobile menu
     $("#open-menu").addEventListener("click", () => {
         showElements(["#close-menu", "#menu"])
         hideElement("#open-menu")
@@ -267,17 +367,21 @@ const initializaApp = () => {
         showElement("#open-menu")
         hideElements(["#close-menu", "#menu"])
     })
+    
+    //save and edit job
     $("#form-create-job").addEventListener("submit", (e) => {
         e.preventDefault()
-        if (isSubmit) {
-            createJob()
-        } else {
-            const jobId = $("#edit-btn").getAttribute("data-id")
-            editJob(jobId)
-        }
-        
+        if (validateJobForm()) {
+            if (isSubmit) {
+                createJob()
+            } else {
+                const jobId = $("#edit-btn").getAttribute("data-id")
+                editJob(jobId)
+            }
+        } 
         $("#form-create-job").reset()
     })
+    // modals to delete and cancel
     $("#modal-delete").addEventListener("click", () => {
         const jobId = $("#modal-delete").getAttribute("data-id")
         deleteJob(jobId)
@@ -286,6 +390,7 @@ const initializaApp = () => {
         hideElement("#modal-window")
         window.location.reload()
     }) 
+    // filters 
     $("#location-filter").addEventListener("change", (e) => {
         e.preventDefault
         $("#location-filter").value
@@ -307,6 +412,14 @@ const initializaApp = () => {
         $("#category-filter").disabled = true
         filterFetch(getParams("seniority", "#seniority-filter"))
     }) 
+
+    //input only accepts numbers
+    $("#salary").addEventListener("input", (e) => {
+        const value = e.target.valueAsNumber
+        if (isNaN(value)) {
+            $("#salary").value = ""
+        }
+    })
 }
         
 
