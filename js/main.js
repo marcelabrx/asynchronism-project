@@ -144,9 +144,7 @@ const renderJob = ( {id, name, image, location, category, languages, seniority, 
     showElement("#spinner")
     setTimeout(() => {
         hideElement("#spinner")
-        showElement("#card-details")
-        showElement(".container-card")
-
+        showElements(["#card-details", ".container-card"])
 
         $("#card-details").innerHTML += `
         <div class="card-image bg-cover bg-center" style="background-image: url('${image ? image : "https://fakeimg.pl/600x400/689cc5/adc6db?text=Default+Image"}')"></div>
@@ -164,8 +162,8 @@ const renderJob = ( {id, name, image, location, category, languages, seniority, 
             <div>
                 <h3 class="my-2 ">Benefits</h3>
                 <p class="text-gray-700 mb-2"><i class="fa-solid fa-globe text-blue-500 mr-1"></i> ${internet_paid ? "Internet Paid" : "No Paid Internet" } </p>
-                <p class="text-gray-700 mb-2"><i class="fa-solid fa-user-doctor text-blue-500 mr-1"></i> ${health_insurance} </p>
-                <p class="text-gray-700 mb-2"><i class="fa-solid fa-plane text-blue-500 mr-1"></i> ${vacation}</p>
+                <p class="text-gray-700 mb-2"><i class="fa-solid fa-user-doctor text-blue-500 mr-1"></i> Health Insurance: ${health_insurance} </p>
+                <p class="text-gray-700 mb-2"><i class="fa-solid fa-plane text-blue-500 mr-1"></i> Vacations Time: ${vacation}</p>
             </div>
             <div class="flex mt-5 mb-3">
                 <button class="btn-edit px-4 py-1 bg-green-600 hover:bg-green-700 rounded-md text-white mr-2" data-id="${ id }">Edit</button>
@@ -185,7 +183,7 @@ const renderJob = ( {id, name, image, location, category, languages, seniority, 
 
         $(".btn-delete").addEventListener("click", () => {
             showElement("#modal-window")
-            hideElements(["#card-details", "#form-job"])
+            hideElements(["#form-job", "#card-details"])
             $(".modal-text").innerHTML = `${name}`
             const jobId = $(".btn-delete").getAttribute("data-id")
             $("#modal-delete").setAttribute("data-id", jobId)
@@ -219,7 +217,7 @@ const saveJobInformation = () => {
     }
 }
 
-const populateForm = ({name, image, description, salary, languages, category, seniority, location, benefits }) => {
+const populateForm = ({ name, image, description, salary, languages, category, seniority, location, benefits }) => {
     $("#name").value = name 
     $("#image").value = image
     $("#description").value = description
@@ -245,7 +243,10 @@ const validateJobForm = () => {
     const name = $("#name").value.trim()
     const description = $("#description").value.trim()
     const salary =  $("#salary").valueAsNumber
-    const language = $("#language-one").value.trim()
+    const languageOne = $("#language-one").value.trim()
+    const languageTwo = $("#language-two").value.trim()
+    const languageThree = $("#language-three").value.trim()
+    const languageFour = $("#language-four").value.trim()
     const vacationTime = $("#vacation-time").value.trim()
     const insuranceType = $("#h-insurance-type").value.trim()
     const category = $("#category").value
@@ -276,12 +277,36 @@ const validateJobForm = () => {
         hideElement(".salary-error")
     }
 
-    if (language === ""){
+    if (languageOne === ""){
         $("#language-one").classList.add("border-red-600")
-        showElement(".language-error")
+        showElement(".language-error1")
     } else {
         $("#language-one").classList.remove("border-red-600")
-        hideElement(".language-error")
+        hideElement(".language-error1")
+    }
+
+    if (languageTwo === ""){
+        $("#language-two").classList.add("border-red-600")
+        showElement(".language-error2")
+    } else {
+        $("#language-two").classList.remove("border-red-600")
+        hideElement(".language-error2")
+    }
+
+    if (languageThree === ""){
+        $("#language-three").classList.add("border-red-600")
+        showElement(".language-error3")
+    } else {
+        $("#language-three").classList.remove("border-red-600")
+        hideElement(".language-error3")
+    }
+
+    if (languageFour === ""){
+        $("#language-four").classList.add("border-red-600")
+        showElement(".language-error4")
+    } else {
+        $("#language-four").classList.remove("border-red-600")
+        hideElement(".language-error4")
     }
 
     if (category === "") {
@@ -324,7 +349,7 @@ const validateJobForm = () => {
         hideElement(".hinsurance-error")
     }
 
-    return name !== "" && description !== "" && !isNaN(salary) && language !== "" && category !== "" && location !== "" && seniority !== "" && vacationTime !== "" && insuranceType !== "" 
+    return name !== "" && description !== "" && !isNaN(salary) && languageOne !== "" && languageTwo !== "" && languageThree !== "" && languageFour !== "" && category !== "" && location !== "" && seniority !== "" && vacationTime !== "" && insuranceType !== "" 
 }
 
 const initializaApp = () => {
@@ -339,19 +364,12 @@ const initializaApp = () => {
         isSubmit = true
     })
 
-    $("#add-btn").addEventListener("click", () => {
-        showElement("#succesfull-alert")
-        setTimeout( () => {
-            hideElement("#succesfull-alert")
-
-        }, 2000)
-    })
-    $("#edit-btn").addEventListener("click", () => {
-        showElement("#succesfull-alert")
-        setTimeout( () => {
-            hideElement("#succesfull-alert")
-
-        }, 2000)
+    $("#cancel-add-btn").addEventListener("click", (e) => {
+        e.preventDefault()
+        hideElement("#form-job")
+        showElements(["#preview-card", "#filters"])
+        $("#form-create-job").reset()
+        isSubmit = false
     })
     
     $("#close-succesfull-alert").addEventListener("click", () => {
@@ -374,12 +392,16 @@ const initializaApp = () => {
         if (validateJobForm()) {
             if (isSubmit) {
                 createJob()
+                showElement("#succesfull-alert")
+                setTimeout( () => {
+                    hideElement("#succesfull-alert")
+                }, 2000)
             } else {
                 const jobId = $("#edit-btn").getAttribute("data-id")
                 editJob(jobId)
             }
+            $("#form-create-job").reset()
         } 
-        $("#form-create-job").reset()
     })
     // modals to delete and cancel
     $("#modal-delete").addEventListener("click", () => {
@@ -387,9 +409,10 @@ const initializaApp = () => {
         deleteJob(jobId)
     })
     $("#modal-cancel").addEventListener("click", () => {
-        hideElement("#modal-window")
-        window.location.reload()
+        hideElements(["#modal-window", "#card-details"])
+        showElements(["#preview-card", "#filters"])
     }) 
+    
     // filters 
     $("#location-filter").addEventListener("change", (e) => {
         e.preventDefault
