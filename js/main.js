@@ -370,14 +370,6 @@ const initializaApp = () => {
         $("#form-create-job").reset()
         isSubmit = true
     })
-    $("#cancel-add-btn").addEventListener("click", (e) => {
-        e.preventDefault()
-        hideElements(["#form-job", "#card-details", ".container-card"])
-        showElements(["#preview-card", "#filters"])
-        $("#clean-btn").reset()
-        $("#form-create-job").reset()
-        isSubmit = false
-    })
     
     $("#close-succesfull-alert").addEventListener("click", () => {
         hideElement("#succesfull-alert")
@@ -415,11 +407,6 @@ const initializaApp = () => {
         const jobId = $("#modal-delete").getAttribute("data-id")
         deleteJob(jobId)
     })
-    $("#modal-cancel").addEventListener("click", () => {
-        hideElements(["#modal-window", "#card-details"])
-        showElements(["#preview-card", "#filters"])
-        $("#clean-btn").reset()
-    }) 
     
     // filters 
     $("#location-filter").addEventListener("change", (e) => {
