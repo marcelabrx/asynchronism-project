@@ -85,7 +85,7 @@
           </select>
         </div>
         
-        <button id="clean-btn" class="p-2 mt-5 bg-black text-white hover:text-blue-700 hover:bg-gray-300 rounded-md"><i class="fa-solid fa-eraser mr-1"></i>Clean</button>
+        <button id="clean-btn" class="p-2 mt-5 ml-2 bg-black text-white hover:text-blue-700 hover:bg-gray-300 rounded-md"><i class="fa-solid fa-eraser mr-1"></i>Clean</button>
       </form>
 
       <!-- Succesfull alert -->
@@ -115,7 +115,7 @@
       </div>
         
       <!-- Card Details -->
-      <section class="hidden container-card flex justify-center items-center w-full md:w-1/2 lg:w-1/3 my-10">
+      <section class="hidden container-card flex justify-center items-center p-4 my-10 w-full md:w-1/2 md:mx-auto lg:mx-auto">
         <div id="card-details" class="bg-white mx-2 px-2 md:mx-5 md:pt-2 rounded-md shadow-lg">
           <!-- rendered from js -->
         </div>
@@ -145,13 +145,13 @@
               </div>
               <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="language-one">Languages<span class="text-red-500 ml-1">*</span></label>
-                <input class="shadow appearance-none border rounded w-24 my-1 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="language-one" type="text" placeholder="Enter the job position languages">
+                <input class="shadow appearance-none border rounded w-full my-1 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="language-one" type="text" placeholder="Enter the job position languages">
                 <p class="language-error1 hidden py-2 mx-1 text-red-600"><i class="fa-solid fa-circle-exclamation mr-2"></i>Enter a valid language.</p>
-                <input class="shadow appearance-none border rounded w-24 my-1 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="language-two" type="text" placeholder="Enter the job position languages">
+                <input class="shadow appearance-none border rounded w-full my-1 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="language-two" type="text" placeholder="Enter the job position languages">
                 <p class="language-error2 hidden py-2 mx-1 text-red-600"><i class="fa-solid fa-circle-exclamation mr-2"></i>Enter a valid language.</p>
-                <input class="shadow appearance-none border rounded w-24 my-1 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="language-three" type="text" placeholder="Enter the job position languages">
+                <input class="shadow appearance-none border rounded w-full my-1 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="language-three" type="text" placeholder="Enter the job position languages">
                 <p class="language-error3 hidden py-2 mx-1 text-red-600"><i class="fa-solid fa-circle-exclamation mr-2"></i>Enter a valid language.</p>
-                <input class="shadow appearance-none border rounded w-24 my-1 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="language-four" type="text" placeholder="Enter the job position languages">
+                <input class="shadow appearance-none border rounded w-full my-1 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="language-four" type="text" placeholder="Enter the job position languages">
                 <p class="language-error4 hidden py-2 mx-1 text-red-600"><i class="fa-solid fa-circle-exclamation mr-2"></i>Enter a valid language.</p>
               </div>
             </div>
@@ -199,10 +199,10 @@
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="salary" type="number" placeholder="Enter the salary position">
                 <p class="salary-error hidden py-2 mx-1 text-red-600"><i class="fa-solid fa-circle-exclamation mr-2"></i>Enter a valid amount.</p>
               </div>
-              <div class="mb-4">
+              <div class="mb-4 lg:mt-16 lg:pt-10">
                 <p class="block text-gray-700 text-sm font-bold mb-2">Benefits:</p>
                 <div class="flex-colum flex-wrap">
-                  <div class="inline-flex items-center mr-4 mb-2">
+                  <div class="inline-flex items-center mr-4 mb-2 lg:mt-2">
                     <p class="mr-2 text-gray-700 font-semibold text-sm">Internet Paid:</p>
                     <label class="inline-flex items-center">
                       <input type="radio" class="form-radio internet_paid" name="internet_paid" value="Yes" checked>
@@ -214,14 +214,14 @@
                     </label>
                   </div>
                   <div>
-                    <div class="inline-flex items-center mr-4 mb-2">
+                    <div class="inline-flex items-center mr-4 mb-2 lg:mt-4">
                       <label class="block mb-2 mt-1 text-gray-700 font-semibold text-sm" for="vacation-time">Vacations<span class="text-red-500 ml-1">*</span></label>
                       <input class="block shadow appearance-none border rounded w-auto ml-2 py-2 px-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="vacation-time" type="text" placeholder="Enter vacation time">
                     </div>
                     <p class="vtime-error hidden py-2 mx-1 text-red-600"><i class="fa-solid fa-circle-exclamation mr-2"></i>Enter a valid vacation time.</p>
                   </div>
                   <div>
-                    <div class="inline-flex items-center mr-4 mb-2">
+                    <div class="inline-flex items-center mr-4 mb-2 lg:mt-4">
                       <label class="block mb-2 mt-1 text-gray-700 font-semibold text-sm" for="h-insurance-type">Health Insurance<span class="text-red-500 ml-1">*</span></label>
                       <input class="block shadow appearance-none border rounded w-auto ml-2 py-2 pl-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="h-insurance-type" type="text" placeholder="Enter specifications">
                     </div>
@@ -354,7 +354,7 @@
         </ul>
       </div>
       <div class="bg-gradient-to-r from-indigo-700 to-blue-300 lg:flex lg:justify-between lg:align-center lg:pt-20 px-10">
-        <section class="text-sm text-gray-700 pb-3 lg:text-base">
+        <section class="text-sm text-gray-900 pb-3 lg:text-base">
           <ul class="flex flex-wrap align-center ml-3 lg:ml-10">
             <a href="#" class="p-2">Legal</a>
             <a href="#" class="p-2">Privacy Center</a>

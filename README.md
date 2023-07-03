@@ -17,7 +17,7 @@ This site allows you to publish the work you offer, the platform allows you to a
 
 
 
-This project was made with the Github service, and you can see it through this [link]()
+This project was made with the Github service, and you can see it through this [link](https://marcelabrx.github.io/asynchronism-project/)
 
 ## 👀 Views
 
@@ -37,6 +37,8 @@ Este es un ejemplo de lo que sería el detalle de una tarjeta, con sus respectiv
 ### ✅ Finals considerations
 Jobs IT is designed to be used in the most user-friendly and efficient way, with each section detailed and easy to use, so that you can create each job advert without any problems.
 
-I hope users enjoy it!
+⚠  Please note that if you use fake filer to create jobs you will get a console error on the preloaded image, use an image that you know works or leave the field empty ⚠ 
+
+Finally , I hope you enjoy it!
 
 

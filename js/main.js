@@ -94,13 +94,13 @@ const renderJobs = (jobs) => {
                 $("#preview-card").innerHTML += `
                 <div class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-4 mb-4">
                     <div class="max-w-xs rounded overflow-hidden shadow-lg">
-                    <div class="card-image bg-cover bg-center" style="background-image: url('${image ? image : "https://fakeimg.pl/600x400/689cc5/adc6db?text=Default+Image"}')"></div>
+                        <div class="card-image bg-cover bg-center" style="background-image: url('${image ? image : "https://fakeimg.pl/600x400/689cc5/adc6db?text=Default+Image"}')"></div>
                         <div class="px-6 py-4">
                             <h2 class="font-bold text-xl mb-2">${name}</h2>
                             <div class="">
                             <p class="flex text-base text-gray-700 mb-2"><i class="fa-solid fa-location-dot mt-1 mr-2"></i>${location}</p>
                             <p class="flex text-base text-gray-700 mb-2"><i class="fa-solid fa-briefcase mt-1 mr-2"></i>${category}</p>
-                            <p class="flex text-base text-gray-700 mb-2"><i class="fa-solid fa-gears mt-1 mr-2"></i>${languageHTML}</p>
+                            <p class="flex flex-wrap text-base text-gray-700 mb-2"><i class="fa-solid fa-gears mt-1 mr-2"></i>${languageHTML}</p>
                             </div>
                             <div class="pt-4 pb-2">
                             <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">${seniority}</span>
@@ -142,32 +142,39 @@ const generateDisplayedLanguages = (languages) => {
 
 const renderJob = ( {id, name, image, location, category, languages, seniority, salary, description, benefits:{health_insurance, internet_paid, vacation } } ) => {    
     showElement("#spinner")
+    cleanContainer("#card-details")
     setTimeout(() => {
         hideElement("#spinner")
         showElements(["#card-details", ".container-card"])
 
         $("#card-details").innerHTML += `
-        <div class="card-image bg-cover bg-center" style="background-image: url('${image ? image : "https://fakeimg.pl/600x400/689cc5/adc6db?text=Default+Image"}')"></div>
-        <div class="flex-colum">
-            <h2 class="text-gray-600 text-2xl font-semibold mb-4">${name}</h2>
-            <p class="mb-2">${description}</p>
-            <hr>
-            <div>
-                <p class="flex text-base text-gray-700 mt-2 mb-2"><i class="fa-solid fa-location-dot mt-1 mr-2"></i>${location}</p>
-                <p class="flex text-base text-gray-700 mb-2"><i class="fa-solid fa-briefcase mt-1 mr-2"></i>${category} / ${seniority} </p>
-                <p class="flex text-base text-gray-700 mb-3"><i class="fa-solid fa-gears mt-1 mr-2"></i>${languages}</p>
-                <p class="flex text-base text-gray-700 mb-3"><i class="fa-solid fa-sack-dollar mt-1 mr-2"></i>$${salary}</p>
-            </div>
-            <hr>
-            <div>
-                <h3 class="my-2 ">Benefits</h3>
-                <p class="text-gray-700 mb-2"><i class="fa-solid fa-globe text-blue-500 mr-1"></i> ${internet_paid ? "Internet Paid" : "No Paid Internet" } </p>
-                <p class="text-gray-700 mb-2"><i class="fa-solid fa-user-doctor text-blue-500 mr-1"></i> Health Insurance: ${health_insurance} </p>
-                <p class="text-gray-700 mb-2"><i class="fa-solid fa-plane text-blue-500 mr-1"></i> Vacations Time: ${vacation}</p>
-            </div>
-            <div class="flex mt-5 mb-3">
-                <button class="btn-edit px-4 py-1 bg-green-600 hover:bg-green-700 rounded-md text-white mr-2" data-id="${ id }">Edit</button>
-                <button class="btn-delete px-4 py-1 bg-red-600 hover:bg-red-700 active:bg-red-700 rounded-md text-white" data-id="${ id }">Delete</button>
+        <div class="md:m-4">
+            <div class="card-image bg-top align-center justify-start mt-10" style="background-image: url('${image ? image : "https://fakeimg.pl/600x400/689cc5/adc6db?text=Default+Image"}')"></div>
+            <div class="lg:flex lg:justify-arround lg:mx-10 lg:mb-2">
+                <div class="lg:flex-colum lg:w-full lg:px-36 lg:mt-4">
+                    <h2 class="text-gray-600 text-2xl font-semibold mb-4">${name}</h2>
+                    <p class="mb-2">${description}</p>
+                </div>
+                <hr>
+                <div class="lg:flex-colum lg:w-full lg:ml-10 lg:mt-16">
+                    <div>
+                        <p class="flex text-base text-gray-700 mt-2 mb-2"><i class="fa-solid fa-location-dot mt-1 mr-2"></i>${location}</p>
+                        <p class="flex text-base text-gray-700 mb-2"><i class="fa-solid fa-briefcase mt-1 mr-2"></i>${category} / ${seniority} </p>
+                        <p class="flex text-base text-gray-700 mb-3"><i class="fa-solid fa-gears mt-1 mr-2"></i>${languages}</p>
+                        <p class="flex text-base text-gray-700 mb-3"><i class="fa-solid fa-sack-dollar mt-1 mr-2"></i>$${salary}</p>
+                    </div>
+                    <hr>
+                    <div>
+                        <h3 class="my-2 ">Benefits</h3>
+                        <p class="text-gray-700 mb-2"><i class="fa-solid fa-globe text-blue-500 mr-1"></i> ${internet_paid ? "Internet Paid" : "No Paid Internet" } </p>
+                        <p class="text-gray-700 mb-2"><i class="fa-solid fa-user-doctor text-blue-500 mr-1"></i> Health Insurance: ${health_insurance} </p>
+                        <p class="text-gray-700 mb-2"><i class="fa-solid fa-plane text-blue-500 mr-1"></i> Vacations Time: ${vacation}</p>
+                    </div>
+                    <div class="flex mt-5 mb-3">
+                        <button class="btn-edit px-4 py-1 bg-green-600 hover:bg-green-700 rounded-md text-white mr-2" data-id="${ id }">Edit</button>
+                        <button class="btn-delete px-4 py-1 bg-red-600 hover:bg-red-700 active:bg-red-700 rounded-md text-white" data-id="${ id }">Delete</button>
+                    </div>
+                </div>
             </div>
         </div>
         `
@@ -363,11 +370,11 @@ const initializaApp = () => {
         $("#form-create-job").reset()
         isSubmit = true
     })
-
     $("#cancel-add-btn").addEventListener("click", (e) => {
         e.preventDefault()
-        hideElement("#form-job")
+        hideElements(["#form-job", "#card-details", ".container-card"])
         showElements(["#preview-card", "#filters"])
+        $("#clean-btn").reset()
         $("#form-create-job").reset()
         isSubmit = false
     })
@@ -411,6 +418,7 @@ const initializaApp = () => {
     $("#modal-cancel").addEventListener("click", () => {
         hideElements(["#modal-window", "#card-details"])
         showElements(["#preview-card", "#filters"])
+        $("#clean-btn").reset()
     }) 
     
     // filters 
